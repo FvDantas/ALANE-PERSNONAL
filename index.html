@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treino - Alane Fernanda</title>
+
+    <link rel="icon" href="favicon.ico">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#7C3AED">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#7C3AED',
+                            light: '#8B5CF6',
+                            dark: '#4C1D95'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { background-color: #f3f0ff; }
+
+        .brand-logo {
+            max-height: 90px;
+            max-width: 160px;
+            object-fit: contain;
+            background: white;
+            padding: 10px;
+            border-radius: 18px;
+            box-shadow:
+                0 10px 25px rgba(124, 58, 237, 0.15),
+                0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand-watermark {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.04;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .brand-watermark img {
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .page-container {
+            position: relative;
+            max-width: 210mm;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.92);
+            min-height: 297mm;
+            padding: 30px;
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.1);
+            border-top: 5px solid #7C3AED;
+        }
+
+        .content-wrapper { position: relative; z-index: 10; }
+
+        @media screen {
+            tbody tr {
+                border-bottom: 1px dashed #e5e7eb;
+                height: 32px;
+            }
+        }
+
+        @media print {
+            @page { size: A4; margin: 0; }
+
+            body {
+                margin: 0;
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .no-print, button { display: none !important; }
+
+            .page-container {
+                margin: 0;
+                padding: 1.5cm;
+                box-shadow: none;
+                width: 100%;
+                border: none;
+                background: transparent !important;
+            }
+
+            header { border-bottom: 2px solid #7C3AED; margin-bottom: 15px; }
+
+            .workout-section {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            table, th, td {
+                border: 1px solid #000 !important;
+                border-collapse: collapse;
+            }
+
+            th { background-color: #f3f0ff !important; }
+
+            input::placeholder { color: transparent; }
+        }
+    </style>
+</head>
+
+<body class="text-neutral-800 font-sans">
+
+<div class="brand-watermark">
+    <img src="logo.png" onerror="this.src='logo.jpg'" alt="">
+</div>
+
+<!-- BOTÕES (PDF + NOVO TREINO) -->
+<div class="fixed bottom-6 right-6 no-print z-50 flex gap-3">
+    <button onclick="novoTreino()"
+            class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-full shadow-lg transition">
+        Novo Treino
+    </button>
+
+    <button onclick="salvarPDF()"
+            class="bg-brand-primary hover:bg-brand-dark text-white font-bold py-4 px-6 rounded-full shadow-lg flex items-center gap-2 transition hover:scale-105">
+        <i class="fas fa-print"></i> Salvar PDF
+    </button>
+</div>
+
+<div class="page-container">
+    <div class="content-wrapper">
+
+        <header class="mb-8 border-b-2 border-brand-primary pb-4 flex justify-between items-end">
+            <div class="w-full">
+                <h1 class="text-5xl font-black text-brand-primary uppercase tracking-tighter leading-none">
+                    ALANE <span class="text-brand-dark">FERNANDA</span>
+                </h1>
+                <p class="text-sm text-brand-light font-bold tracking-[0.3em] uppercase mt-1 mb-4">
+                    Personal Trainer
+                </p>
+
+                <div class="flex items-center gap-3 w-full md:w-3/4 bg-purple-50 p-2 rounded">
+                    <span class="font-bold text-brand-dark text-sm">ALUNO(A):</span>
+                    <input id="aluno"
+                           type="text"
+                           oninput="updatePageTitle(this.value); salvarLocal()"
+                           placeholder="Digite o nome..."
+                           class="flex-1 border-b border-brand-light bg-transparent focus:outline-none font-bold text-lg uppercase">
+                </div>
+            </div>
+
+            <div class="pl-4">
+                <img src="logo.png" onerror="this.src='logo.jpg'" class="brand-logo" alt="Logo">
+            </div>
+        </header>
+
+        <section class="flex flex-wrap gap-4 mb-8 bg-white p-4 rounded-lg border shadow-sm">
+            <div class="flex-1">
+                <label class="text-[10px] font-bold uppercase text-brand-light">Idade</label>
+                <input class="w-full border-b bg-transparent text-center font-semibold" oninput="salvarLocal()">
+            </div>
+            <div class="flex-1">
+                <label class="text-[10px] font-bold uppercase text-brand-light">Início</label>
+                <input type="date" class="w-full border-b bg-transparent text-center" oninput="salvarLocal()">
+            </div>
+            <div class="flex-1">
+                <label class="text-[10px] font-bold uppercase text-brand-light">Validade</label>
+                <input placeholder="Ex: 8 semanas" class="w-full border-b bg-transparent text-center" oninput="salvarLocal()">
+            </div>
+            <div class="w-full md:w-1/2">
+                <label class="text-[10px] font-bold uppercase text-brand-light">Objetivo</label>
+                <input class="w-full border-b bg-transparent font-semibold" oninput="salvarLocal()">
+            </div>
+        </section>
+
+        <div id="workouts-container"></div>
+
+        <div class="text-center my-8 no-print">
+            <button onclick="addWorkoutSection(); salvarLocal()"
+                    class="bg-brand-primary text-white py-3 px-8 rounded-full shadow-lg flex items-center gap-2 mx-auto hover:bg-brand-dark transition">
+                <i class="fas fa-dumbbell"></i> Adicionar Treino
+            </button>
+        </div>
+
+        <section class="mt-4 pt-4 border-t">
+            <h3 class="font-bold text-brand-dark mb-2 text-xs uppercase">Observações Gerais</h3>
+            <textarea class="w-full p-3 bg-purple-50 border rounded-lg h-24"
+                      oninput="salvarLocal()"></textarea>
+        </section>
+
+    </div>
+</div>
+
+<script>
+    // ─── Título da página ────────────────────────────────────────────────────────
+    function updatePageTitle(name) {
+        document.title = name.trim() ? 'Treino - ' + name : 'Treino - Alane Fernanda';
+    }
+
+    // ─── PDF ─────────────────────────────────────────────────────────────────────
+    function salvarPDF() {
+        window.print();
+        setTimeout(confirmarNovoTreino, 500);
+    }
+
+    function confirmarNovoTreino() {
+        if (confirm('Deseja iniciar um novo treino agora?')) novoTreino();
+    }
+
+    function novoTreino() {
+        if (!confirm('Isso apagará todos os dados atuais. Continuar?')) return;
+        localStorage.removeItem('treino-alane');
+        location.reload();
+    }
+
+    // ─── Letras dinâmicas ────────────────────────────────────────────────────────
+    // Sempre recalcula A, B, C… com base na posição real no DOM.
+    // Assim, apagar ou reordenar nunca desincroniza as letras.
+    function recalcularLetras() {
+        const sections = document.querySelectorAll('.workout-section');
+        sections.forEach((sec, i) => {
+            const badge = sec.querySelector('.letter-badge');
+            if (badge) badge.textContent = String.fromCharCode(65 + i); // 65 = 'A'
+        });
+    }
+
+    // ─── Salvar / Restaurar (por dados, não por innerHTML) ───────────────────────
+    function coletarDados() {
+        const dados = {
+            aluno:      document.getElementById('aluno')?.value ?? '',
+            infoInputs: [],
+            observacao: document.querySelector('section.mt-4 textarea')?.value ?? '',
+            treinos:    []
+        };
+
+        // Campos de info (idade, início, validade, objetivo)
+        document.querySelectorAll('section.flex input, section.flex select').forEach(el => {
+            dados.infoInputs.push(el.value);
+        });
+
+        // Treinos
+        document.querySelectorAll('.workout-section').forEach(sec => {
+            const titulo = sec.querySelector('input[placeholder="TÍTULO DO TREINO"]')?.value ?? '';
+            const exercicios = [];
+            sec.querySelectorAll('tbody tr').forEach(row => {
+                const cells = row.querySelectorAll('input');
+                exercicios.push([...cells].map(c => c.value));
+            });
+            dados.treinos.push({ titulo, exercicios });
+        });
+
+        return dados;
+    }
+
+    function salvarLocal() {
+        try {
+            localStorage.setItem('treino-alane', JSON.stringify(coletarDados()));
+        } catch (e) {
+            console.warn('Erro ao salvar:', e);
+        }
+    }
+
+    function restaurarLocal() {
+        let dados;
+        try {
+            const raw = localStorage.getItem('treino-alane');
+            if (!raw) return false;
+            dados = JSON.parse(raw);
+        } catch (e) {
+            localStorage.removeItem('treino-alane');
+            return false;
+        }
+
+        // Aluno
+        const alunoEl = document.getElementById('aluno');
+        if (alunoEl && dados.aluno) {
+            alunoEl.value = dados.aluno;
+            updatePageTitle(dados.aluno);
+        }
+
+        // Campos de info
+        const infoEls = document.querySelectorAll('section.flex input, section.flex select');
+        infoEls.forEach((el, i) => {
+            if (dados.infoInputs?.[i] !== undefined) el.value = dados.infoInputs[i];
+        });
+
+        // Observação
+        const obsEl = document.querySelector('section.mt-4 textarea');
+        if (obsEl && dados.observacao) obsEl.value = dados.observacao;
+
+        // Treinos
+        if (Array.isArray(dados.treinos)) {
+            dados.treinos.forEach(t => {
+                addWorkoutSection(t.titulo, t.exercicios);
+            });
+        }
+
+        return true;
+    }
+
+    // ─── Criar seção de treino ────────────────────────────────────────────────────
+    // letra é sempre calculada via recalcularLetras() após inserir no DOM,
+    // então não dependemos de nenhum contador externo.
+    function addWorkoutSection(titulo = '', exercicios = null) {
+        const container = document.getElementById('workouts-container');
+        const sectionIndex = container.querySelectorAll('.workout-section').length; // posição atual
+        const letter = String.fromCharCode(65 + sectionIndex);
+
+        const section = document.createElement('div');
+        section.className = 'workout-section mb-6 bg-white border rounded-lg shadow-sm overflow-hidden';
+
+        // ID único por timestamp para o tbody (evita colisões mesmo ao restaurar)
+        const tbodyId = 'tbody-' + Date.now() + '-' + sectionIndex;
+
+        section.innerHTML = `
+            <div class="bg-brand-primary text-white p-3 flex justify-between items-center">
+                <div class="flex items-center gap-3 w-full">
+                    <span class="letter-badge font-black text-2xl bg-white text-brand-primary w-10 h-10 flex items-center justify-center rounded-full">${letter}</span>
+                    <input placeholder="TÍTULO DO TREINO"
+                           value="${escapeAttr(titulo)}"
+                           class="bg-transparent text-white w-full font-bold uppercase focus:outline-none"
+                           oninput="salvarLocal()">
+                </div>
+                <button onclick="removeWorkout(this)" class="no-print ml-2">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+
+            <table class="w-full text-sm">
+                <thead class="bg-purple-50 text-[10px] uppercase">
+                    <tr>
+                        <th class="p-2 w-1/3">Exercício</th>
+                        <th class="p-2 text-center w-12">Séries</th>
+                        <th class="p-2 text-center w-12">Reps</th>
+                        <th class="p-2 text-center w-12">Int</th>
+                        <th class="p-2">Método / Obs</th>
+                        <th class="p-2 w-6 no-print"></th>
+                    </tr>
+                </thead>
+                <tbody id="${tbodyId}"></tbody>
+            </table>
+
+            <div class="p-3 text-center no-print">
+                <button onclick="addExercise('${tbodyId}'); salvarLocal()" class="text-brand-primary text-xs font-bold">
+                    + Adicionar exercício
+                </button>
+            </div>
+        `;
+
+        container.appendChild(section);
+
+        // Popula exercícios salvos ou cria uma linha em branco
+        if (exercicios && exercicios.length > 0) {
+            exercicios.forEach(vals => addExercise(tbodyId, vals));
+        } else {
+            addExercise(tbodyId);
+        }
+
+        // Recalcula todas as letras (garante sequência correta)
+        recalcularLetras();
+        return section;
+    }
+
+    // ─── Remover treino e reordenar letras ───────────────────────────────────────
+    function removeWorkout(btn) {
+        btn.closest('.workout-section').remove();
+        recalcularLetras(); // re-sequencia A, B, C… após remoção
+        salvarLocal();
+    }
+
+    // ─── Adicionar exercício ──────────────────────────────────────────────────────
+    function addExercise(tbodyId, valores = []) {
+        const tbody = document.getElementById(tbodyId);
+        if (!tbody) return;
+
+        const row = document.createElement('tr');
+        const v = (i) => escapeAttr(valores[i] ?? '');
+
+        row.innerHTML = `
+            <td class="p-1 w-1/3"><input value="${v(0)}" class="w-full bg-transparent focus:outline-none" oninput="salvarLocal()"></td>
+            <td class="p-1 w-12"><input value="${v(1)}" class="w-full text-center bg-transparent focus:outline-none" oninput="salvarLocal()"></td>
+            <td class="p-1 w-12"><input value="${v(2)}" class="w-full text-center bg-transparent focus:outline-none" oninput="salvarLocal()"></td>
+            <td class="p-1 w-12"><input value="${v(3)}" class="w-full text-center bg-transparent focus:outline-none" oninput="salvarLocal()"></td>
+            <td class="p-1"><input value="${v(4)}" class="w-full bg-transparent focus:outline-none" oninput="salvarLocal()"></td>
+            <td class="p-1 w-6 text-center no-print">
+                <button onclick="this.closest('tr').remove(); salvarLocal()">✕</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    // ─── Utilitário: escapa aspas para uso em atributos HTML ─────────────────────
+    function escapeAttr(str) {
+        return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    // ─── Inicialização ────────────────────────────────────────────────────────────
+    window.onload = () => {
+        const restaurou = restaurarLocal();
+        if (!restaurou) {
+            addWorkoutSection(); // começa com treino A em branco
+        }
+    };
+</script>
+
+</body>
+</html>
