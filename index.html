@@ -193,10 +193,11 @@
             </button>
         </div>
 
-        <section class="mt-4 pt-4 border-t">
+        <section class="mt-4 pt-4 border-t break-inside-avoid">
             <h3 class="font-bold text-brand-dark mb-2 text-xs uppercase">Observações Gerais</h3>
-            <textarea class="w-full p-3 bg-purple-50 border rounded-lg h-24"
-                      oninput="salvarLocal()"></textarea>
+            <textarea id="obs-gerais" 
+              class="w-full p-3 bg-purple-50 border rounded-lg resize-none overflow-hidden min-h-[96px]"
+              oninput="autoGrow(this); salvarLocal()"></textarea>
         </section>
 
     </div>
@@ -207,6 +208,14 @@
     function updatePageTitle(name) {
         document.title = name.trim() ? 'Treino - ' + name : 'Treino - Alane Fernanda';
     }
+    
+    function autoGrow(element) {
+        element.style.height = "auto";
+        element.style.height = element.scrollHeight + "px";
+    }
+
+// Chame essa função também logo após carregar os dados salvos do LocalStorage!
+// Exemplo: autoGrow(document.getElementById('obs-gerais'));
 
     // ─── PDF ─────────────────────────────────────────────────────────────────────
     function salvarPDF() {
@@ -297,8 +306,10 @@
 
         // Observação
         const obsEl = document.querySelector('section.mt-4 textarea');
-        if (obsEl && dados.observacao) obsEl.value = dados.observacao;
-
+        if (obsEl && dados.observacao) {
+            obsEl.value = dados.observacao;
+            autoGrow(obsEl);
+            }
         // Treinos
         if (Array.isArray(dados.treinos)) {
             dados.treinos.forEach(t => {
