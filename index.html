@@ -9,6 +9,11 @@
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#7C3AED">
 
+    <!-- Fontes do Stitch adicionadas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -18,8 +23,20 @@
                         brand: {
                             primary: '#7C3AED',
                             light: '#8B5CF6',
-                            dark: '#4C1D95'
+                            dark: '#4C1D95',
+                            purple: '#8B3DD9',
+                            darkViolet: '#1D0634',
+                            deepNight: '#0F031C'
                         }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        display: ['Syne', 'Montserrat', 'sans-serif'],
+                        mono: ['"Space Grotesk"', 'monospace'],
+                    },
+                    boxShadow: {
+                        'luxury': '0 30px 80px -15px rgba(29, 6, 52, 0.18), 0 0 25px rgba(139, 61, 217, 0.08)',
+                        'logo-glow': '0 20px 45px -8px rgba(139, 61, 217, 0.35), 0 0 0 1px rgba(139, 61, 217, 0.15)',
                     }
                 }
             }
@@ -79,6 +96,37 @@
             }
         }
 
+        /* ─── ESTILOS DA CAPA (STITCH) ───────────────────────────────────────── */
+        .a4-container {
+            width: 100%;
+            max-width: 820px;
+            aspect-ratio: 1 / 1.4142;
+            position: relative;
+        }
+
+        .clip-slanted-base {
+            clip-path: polygon(0 28%, 100% 0%, 100% 100%, 0% 100%);
+        }
+        
+        .clip-secondary-accent {
+            clip-path: polygon(0 52%, 100% 18%, 100% 100%, 0% 100%);
+        }
+
+        .tracking-editorial-wide {
+            letter-spacing: 0.38em;
+        }
+
+        .tracking-ultra-wide {
+            letter-spacing: 0.55em;
+        }
+
+        .hairline-grid {
+            background-size: 28px 28px;
+            background-image: 
+                linear-gradient(to right, rgba(139, 61, 217, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(139, 61, 217, 0.035) 1px, transparent 1px);
+        }
+
         @media print {
             @page { size: A4; margin: 0; }
 
@@ -115,11 +163,109 @@
             th { background-color: #f3f0ff !important; }
 
             input::placeholder { color: transparent; }
+
+            /* Ajustes de impressão da capa */
+            .a4-container {
+                width: 100vw !important;
+                max-width: none !important;
+                height: 100vh !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                border: none !important;
+                page-break-after: always;
+                break-after: page;
+            }
         }
     </style>
 </head>
 
 <body class="text-neutral-800 font-sans">
+
+<!-- ========================================== -->
+<!-- CAPA PARA IMPRESSÃO EM LIVRETO (STITCH)    -->
+<!-- ========================================== -->
+<article class="a4-container bg-white rounded-none sm:rounded-[2px] shadow-luxury flex-col justify-between overflow-hidden relative border border-black/5 hidden print:flex" data-purpose="magazine-cover-layout">
+    
+    <!-- Background Hairline Grid -->
+    <div class="absolute inset-0 hairline-grid pointer-events-none z-0"></div>
+    
+    <!-- Editorial Thin Border Inset Frame -->
+    <div class="absolute inset-4 sm:inset-7 border border-[#8B3DD9]/20 pointer-events-none z-10">
+        <div class="absolute -top-1.5 -left-1.5 w-3 h-3 border-t-2 border-l-2 border-[#8B3DD9]"></div>
+        <div class="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-[#8B3DD9]"></div>
+        <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-[#8B3DD9]"></div>
+        <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-[#8B3DD9]"></div>
+    </div>
+
+    <!-- Topo limpo (textos superiores removidos) -->
+    <header class="relative z-20 px-8 sm:px-14 pt-8 sm:pt-12 flex justify-end items-start text-xs font-mono tracking-wider opacity-0">
+        <!-- Mantido vazio para preservar o espaçamento original do layout -->
+    </header>
+
+    <!-- Centro: Logo e Nome -->
+    <main class="relative z-20 flex-1 flex flex-col justify-center items-center px-6 sm:px-12 text-center my-auto pt-2 pb-6">
+        <!-- Logo Container -->
+        <div class="relative group cursor-default mb-8 sm:mb-11" data-purpose="brand-emblem-container">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-[#8B3DD9]/30 to-purple-400/20 blur-2xl transform scale-110 pointer-events-none"></div>
+            <div class="relative p-1 sm:p-1.5 rounded-full bg-gradient-to-b from-[#8B3DD9] via-[#8B3DD9]/30 to-transparent">
+                <div class="w-40 h-40 sm:w-56 sm:h-56 md:w-60 md:h-60 rounded-full overflow-hidden bg-white shadow-logo-glow border-[3px] border-white flex items-center justify-center">
+                    <!-- Logo Real Inserida -->
+                    <img alt="Alane Fernanda — Personal Trainer Logo" class="w-full h-full object-cover object-center" src="logo.png" onerror="this.src='logo.jpg'" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Tipografia Principal -->
+        <div class="space-y-3 sm:space-y-4 max-w-xl mx-auto">
+            <h1 class="font-display font-extrabold text-3xl sm:text-5xl md:text-[3.25rem] leading-[1.05] tracking-tight uppercase text-brand-darkViolet">
+                ALANE FERNANDA
+            </h1>
+            <div class="flex items-center justify-center gap-3">
+                <div class="h-px w-6 sm:w-10 bg-gradient-to-r from-transparent to-[#8B3DD9]"></div>
+                <p class="text-xs sm:text-sm font-semibold tracking-editorial-wide text-[#8B3DD9] uppercase font-sans">
+                    PERSONAL TRAINER
+                </p>
+                <div class="h-px w-6 sm:w-10 bg-gradient-to-l from-transparent to-[#8B3DD9]"></div>
+            </div>
+            <p class="text-[11px] sm:text-xs text-gray-500 font-sans tracking-wide max-w-md mx-auto leading-relaxed pt-1">
+                CONSULTORIA PREMIUM &amp; METODOLOGIA DE ALTA PERFORMANCE
+            </p>
+        </div>
+    </main>
+
+    <!-- Rodapé: Formas Geométricas -->
+    <footer class="relative z-20 w-full overflow-hidden" data-purpose="base-curated-footer">
+        <!-- Camada 1: Roxo Vibrante -->
+        <div class="h-32 sm:h-44 w-full bg-gradient-to-r from-brand-purple via-[#9b4feb] to-[#6d25be] clip-secondary-accent opacity-90 absolute bottom-0 left-0"></div>
+        
+        <!-- Camada 2: Violeta Escuro -->
+        <div class="relative bg-gradient-to-r from-brand-deepNight via-brand-darkViolet to-[#270947] clip-slanted-base pt-14 sm:pt-20 pb-7 sm:pb-9 px-8 sm:px-14 text-white shadow-2xl">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-5">
+                
+                <!-- Categoria do Documento -->
+                <div class="space-y-1 sm:space-y-1.5 text-left">
+                    <h2 class="text-lg sm:text-2xl font-bold font-sans tracking-wide uppercase text-white leading-tight">
+                        PROGRAMA DE TREINAMENTO
+                    </h2>
+                    <p class="text-[10px] sm:text-xs text-purple-200/70 font-light tracking-widest uppercase">
+                        ALTA PERFORMANCE &amp; LONGEVIDADE
+                    </p>
+                </div>
+                
+            </div>
+            
+            <!-- Linha inferior com cidade atualizada -->
+            <div class="mt-4 pt-3 border-t border-white/10 flex justify-between items-center text-[8px] sm:text-[9px] font-mono tracking-widest text-purple-200/60 uppercase">
+                <span>ALL RIGHTS RESERVED • © 2025 ALANE FERNANDA</span>
+                <span>CARNAÚBA DOS DANTAS • RN</span>
+            </div>
+        </div>
+    </footer>
+</article>
+<!-- ========================================== -->
+<!-- FIM DA CAPA                                -->
+<!-- ========================================== -->
 
 <div class="brand-watermark">
     <img src="logo.png" onerror="this.src='logo.jpg'" alt="">
