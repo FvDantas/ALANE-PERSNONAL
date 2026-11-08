@@ -173,8 +173,17 @@
                 border-radius: 0 !important;
                 margin: 0 !important;
                 border: none !important;
+            }
+
+            /* Controle de páginas do livreto */
+            .capa-frente {
                 page-break-after: always;
                 break-after: page;
+            }
+
+            .capa-verso {
+                page-break-before: always;
+                break-before: page;
             }
         }
     </style>
@@ -183,9 +192,9 @@
 <body class="text-neutral-800 font-sans">
 
 <!-- ========================================== -->
-<!-- CAPA PARA IMPRESSÃO EM LIVRETO (STITCH)    -->
+<!-- CAPA 1 (FRENTE DO LIVRETO)                 -->
 <!-- ========================================== -->
-<article class="a4-container bg-white rounded-none sm:rounded-[2px] shadow-luxury flex-col justify-between overflow-hidden relative border border-black/5 hidden print:flex" data-purpose="magazine-cover-layout">
+<article class="a4-container capa-frente bg-white rounded-none sm:rounded-[2px] shadow-luxury flex-col justify-between overflow-hidden relative border border-black/5 hidden print:flex" data-purpose="magazine-cover-layout">
     
     <!-- Background Hairline Grid -->
     <div class="absolute inset-0 hairline-grid pointer-events-none z-0"></div>
@@ -264,7 +273,7 @@
     </footer>
 </article>
 <!-- ========================================== -->
-<!-- FIM DA CAPA                                -->
+<!-- FIM DA CAPA 1                              -->
 <!-- ========================================== -->
 
 <div class="brand-watermark">
@@ -349,6 +358,89 @@
     </div>
 </div>
 
+<!-- ========================================== -->
+<!-- CAPA 2 (VERSO DO LIVRETO / CONTRACAPA)     -->
+<!-- ========================================== -->
+<article class="a4-container capa-verso bg-white rounded-none sm:rounded-[2px] shadow-luxury flex-col justify-between overflow-hidden relative border border-black/5 hidden print:flex" data-purpose="magazine-cover-layout">
+    
+    <!-- Background Hairline Grid -->
+    <div class="absolute inset-0 hairline-grid pointer-events-none z-0"></div>
+    
+    <!-- Editorial Thin Border Inset Frame -->
+    <div class="absolute inset-4 sm:inset-7 border border-[#8B3DD9]/20 pointer-events-none z-10">
+        <div class="absolute -top-1.5 -left-1.5 w-3 h-3 border-t-2 border-l-2 border-[#8B3DD9]"></div>
+        <div class="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-[#8B3DD9]"></div>
+        <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-[#8B3DD9]"></div>
+        <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-[#8B3DD9]"></div>
+    </div>
+
+    <!-- Topo limpo -->
+    <header class="relative z-20 px-8 sm:px-14 pt-8 sm:pt-12 flex justify-end items-start text-xs font-mono tracking-wider opacity-0">
+    </header>
+
+    <!-- Centro: Logo e Nome -->
+    <main class="relative z-20 flex-1 flex flex-col justify-center items-center px-6 sm:px-12 text-center my-auto pt-2 pb-6">
+        <!-- Logo Container -->
+        <div class="relative group cursor-default mb-8 sm:mb-11" data-purpose="brand-emblem-container">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-[#8B3DD9]/30 to-purple-400/20 blur-2xl transform scale-110 pointer-events-none"></div>
+            <div class="relative p-1 sm:p-1.5 rounded-full bg-gradient-to-b from-[#8B3DD9] via-[#8B3DD9]/30 to-transparent">
+                <div class="w-40 h-40 sm:w-56 sm:h-56 md:w-60 md:h-60 rounded-full overflow-hidden bg-white shadow-logo-glow border-[3px] border-white flex items-center justify-center">
+                    <img alt="Alane Fernanda — Personal Trainer Logo" class="w-full h-full object-cover object-center" src="logo.png" onerror="this.src='logo.jpg'" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Tipografia Principal -->
+        <div class="space-y-3 sm:space-y-4 max-w-xl mx-auto">
+            <h1 class="font-display font-extrabold text-3xl sm:text-5xl md:text-[3.25rem] leading-[1.05] tracking-tight uppercase text-brand-darkViolet">
+                ALANE FERNANDA
+            </h1>
+            <div class="flex items-center justify-center gap-3">
+                <div class="h-px w-6 sm:w-10 bg-gradient-to-r from-transparent to-[#8B3DD9]"></div>
+                <p class="text-xs sm:text-sm font-semibold tracking-editorial-wide text-[#8B3DD9] uppercase font-sans">
+                    PERSONAL TRAINER
+                </p>
+                <div class="h-px w-6 sm:w-10 bg-gradient-to-l from-transparent to-[#8B3DD9]"></div>
+            </div>
+            <p class="text-[11px] sm:text-xs text-gray-500 font-sans tracking-wide max-w-md mx-auto leading-relaxed pt-1">
+                CONSULTORIA PREMIUM &amp; METODOLOGIA DE ALTA PERFORMANCE
+            </p>
+        </div>
+    </main>
+
+    <!-- Rodapé: Formas Geométricas -->
+    <footer class="relative z-20 w-full overflow-hidden" data-purpose="base-curated-footer">
+        <!-- Camada 1: Roxo Vibrante -->
+        <div class="h-32 sm:h-44 w-full bg-gradient-to-r from-brand-purple via-[#9b4feb] to-[#6d25be] clip-secondary-accent opacity-90 absolute bottom-0 left-0"></div>
+        
+        <!-- Camada 2: Violeta Escuro -->
+        <div class="relative bg-gradient-to-r from-brand-deepNight via-brand-darkViolet to-[#270947] clip-slanted-base pt-14 sm:pt-20 pb-7 sm:pb-9 px-8 sm:px-14 text-white shadow-2xl">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-5">
+                
+                <!-- Categoria do Documento -->
+                <div class="space-y-1 sm:space-y-1.5 text-left">
+                    <h2 class="text-lg sm:text-2xl font-bold font-sans tracking-wide uppercase text-white leading-tight">
+                        PROGRAMA DE TREINAMENTO
+                    </h2>
+                    <p class="text-[10px] sm:text-xs text-purple-200/70 font-light tracking-widest uppercase">
+                        ALTA PERFORMANCE &amp; LONGEVIDADE
+                    </p>
+                </div>
+                
+            </div>
+            
+            <!-- Linha inferior com cidade atualizada -->
+            <div class="mt-4 pt-3 border-t border-white/10 flex justify-between items-center text-[8px] sm:text-[9px] font-mono tracking-widest text-purple-200/60 uppercase">
+                <span>ALL RIGHTS RESERVED • © 2025 ALANE FERNANDA</span>
+                <span>CARNAÚBA DOS DANTAS • RN</span>
+            </div>
+        </div>
+    </footer>
+</article>
+<!-- ========================================== -->
+<!-- FIM DA CAPA 2                              -->
+<!-- ========================================== -->
+
 <script>
     // ─── Título da página ────────────────────────────────────────────────────────
     function updatePageTitle(name) {
@@ -359,9 +451,6 @@
         element.style.height = "auto";
         element.style.height = element.scrollHeight + "px";
     }
-
-// Chame essa função também logo após carregar os dados salvos do LocalStorage!
-// Exemplo: autoGrow(document.getElementById('obs-gerais'));
 
     // ─── PDF ─────────────────────────────────────────────────────────────────────
     function salvarPDF() {
@@ -380,8 +469,6 @@
     }
 
     // ─── Letras dinâmicas ────────────────────────────────────────────────────────
-    // Sempre recalcula A, B, C… com base na posição real no DOM.
-    // Assim, apagar ou reordenar nunca desincroniza as letras.
     function recalcularLetras() {
         const sections = document.querySelectorAll('.workout-section');
         sections.forEach((sec, i) => {
@@ -399,12 +486,10 @@
             treinos:    []
         };
 
-        // Campos de info (idade, início, validade, objetivo)
         document.querySelectorAll('section.flex input, section.flex select').forEach(el => {
             dados.infoInputs.push(el.value);
         });
 
-        // Treinos
         document.querySelectorAll('.workout-section').forEach(sec => {
             const titulo = sec.querySelector('input[placeholder="TÍTULO DO TREINO"]')?.value ?? '';
             const exercicios = [];
@@ -437,26 +522,23 @@
             return false;
         }
 
-        // Aluno
         const alunoEl = document.getElementById('aluno');
         if (alunoEl && dados.aluno) {
             alunoEl.value = dados.aluno;
             updatePageTitle(dados.aluno);
         }
 
-        // Campos de info
         const infoEls = document.querySelectorAll('section.flex input, section.flex select');
         infoEls.forEach((el, i) => {
             if (dados.infoInputs?.[i] !== undefined) el.value = dados.infoInputs[i];
         });
 
-        // Observação
         const obsEl = document.querySelector('section.mt-4 textarea');
         if (obsEl && dados.observacao) {
             obsEl.value = dados.observacao;
             autoGrow(obsEl);
-            }
-        // Treinos
+        }
+        
         if (Array.isArray(dados.treinos)) {
             dados.treinos.forEach(t => {
                 addWorkoutSection(t.titulo, t.exercicios);
@@ -467,17 +549,14 @@
     }
 
     // ─── Criar seção de treino ────────────────────────────────────────────────────
-    // letra é sempre calculada via recalcularLetras() após inserir no DOM,
-    // então não dependemos de nenhum contador externo.
     function addWorkoutSection(titulo = '', exercicios = null) {
         const container = document.getElementById('workouts-container');
-        const sectionIndex = container.querySelectorAll('.workout-section').length; // posição atual
+        const sectionIndex = container.querySelectorAll('.workout-section').length;
         const letter = String.fromCharCode(65 + sectionIndex);
 
         const section = document.createElement('div');
         section.className = 'workout-section mb-6 bg-white border rounded-lg shadow-sm overflow-hidden';
 
-        // ID único por timestamp para o tbody (evita colisões mesmo ao restaurar)
         const tbodyId = 'tbody-' + Date.now() + '-' + sectionIndex;
 
         section.innerHTML = `
@@ -517,14 +596,12 @@
 
         container.appendChild(section);
 
-        // Popula exercícios salvos ou cria uma linha em branco
         if (exercicios && exercicios.length > 0) {
             exercicios.forEach(vals => addExercise(tbodyId, vals));
         } else {
             addExercise(tbodyId);
         }
 
-        // Recalcula todas as letras (garante sequência correta)
         recalcularLetras();
         return section;
     }
@@ -532,7 +609,7 @@
     // ─── Remover treino e reordenar letras ───────────────────────────────────────
     function removeWorkout(btn) {
         btn.closest('.workout-section').remove();
-        recalcularLetras(); // re-sequencia A, B, C… após remoção
+        recalcularLetras();
         salvarLocal();
     }
 
@@ -561,7 +638,7 @@
     function escapeAttr(str) {
         return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
-    <!-- trigger deploy -->
+
     // ─── Inicialização ────────────────────────────────────────────────────────────
     window.onload = () => {
         const restaurou = restaurarLocal();
